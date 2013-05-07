@@ -1,0 +1,5 @@
+FILE QUARANTINED
+
+Microsoft Forefront Security for Exchange Server removed a file since it was found to match a filter.
+File name: "winmail.dat->UXPin-Bridgespan-Scaffold.zip->1_3_7_b_6bc67bbf99e6b5daf6e38fd7fe4230690dcc.js"
+Filter name: "FILE FILTER= DSFileFilterList: *.js"
