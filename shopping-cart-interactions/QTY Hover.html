@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+		<link href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,700,300,600,800' rel='stylesheet' type='text/css'>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+		<style>
+			.holder {
+				width: 75px;
+				position: relative;
+				padding: 10px;
+				-webkit-transition: all linear .1s;
+				overflow: hidden
+			}
+			.holder .actions {
+				position: absolute;
+				right: 10px;
+				top: 50%;
+				margin-top: -7.5px;
+				opacity: 0;
+				display: none;
+			}
+			.holder .actions a {
+				display: block;
+				font-size: 10px;
+				line-height: 15px
+			}
+			input.span1 { margin: 0; text-align: center}
+			.holder.hover, .holder.focus {
+				box-shadow: 0 0 5px rgba(0,0,0,.3);
+				width: 120px;
+				background: #f9f9f9;
+				opacity: 1
+			}
+			.holder.hover .actions, .holder.focus .actions {
+				opacity: 1;
+				display: block;
+			}
+			.holder.disabled { opacity: .4 }
+			#total { text-align: center; width: 60px; font-weight: bold; padding: 5px; -webkit-transition: all linear .5s; margin: 10px}
+			#total.changed { background: rgba(0,0,0,.1); }
+			.icon-spinner { display: none; position: absolute; top: 50%; left: 15px; margin-top: -7px  }
+			.working .icon-spinner { display: block }
+		</style>
+	</head>
+	<body>
+		<div class="centerer">
+			<form id="totaler">
+			<div class="holder"><i class="icon-spinner icon-spin"></i>
+				<input value="3" type="text" class="span1" tabindex="1">
+				<div class="actions">
+					<a href="#">Remove</a>
+				</div>
+			</div>
+			<div class="holder"><i class="icon-spinner icon-spin"></i>
+				<input value="6" type="text" class="span1" tabindex="2">
+				<div class="actions">
+					<a href="#">Remove</a>
+				</div>
+			</div>
+			<div class="holder"><i class="icon-spinner icon-spin"></i>
+				<input value="9" type="text" class="span1" tabindex="3">
+				<div class="actions">
+					<a href="#">Remove</a>
+				</div>
+			</div>
+			<div class="holder"><i class="icon-spinner icon-spin"></i>
+				<input value="2" type="text" class="span1" tabindex="4">
+				<div class="actions">
+					<a href="#">Remove</a>
+				</div>
+			</div>
+			<div class="holder"><i class="icon-spinner icon-spin"></i>
+				<input value="5" type="text" class="span1" tabindex="5">
+				<div class="actions">
+					<a href="#">Remove</a>
+				</div>
+			</div>
+			</form>
+			<div id="total">25</div>
+		</div>
+		<script>
+			var total = 25;
+			$("#totaler").submit( changed );
+			$("a").click( function() { $(this).parent(".actions").siblings("input").val(0); changed(); });
+			$(".holder").hover(function(){$(this).addClass("hover").removeClass("disabled")}, function(){$(this).removeClass("hover"); if($(this).attr("data-disabled")) {$(this).addClass("disabled")} });
+			$("input")
+				.focus( function() { $(this).attr("data-val", $(this).val()); $(this).parent(".holder").addClass("focus"); })
+				.blur( function() {$(this).parent(".holder").removeClass("focus"); })
+				.keyup( function() { $(this).parent(".holder").addClass("working"); setTimeout("changed()", Math.random()*3000); })
+				.change(changed);
+			function changed() {
+				total = 0;
+				$("input").each( function() {
+					total += parseInt($(this).val());
+					if($(this).val() == 0) {
+						$(this).parents(".holder").attr("data-disabled", true).addClass("disabled").removeClass("working");
+					} else {
+						$(this).parents(".holder").removeAttr("data-disabled").removeClass("disabled working");
+					}
+				});
+				
+				$("#total").text(total).addClass("changed");
+				setTimeout("$('#total').removeClass('changed');", 5000);
+			}
+		</script>
+		<script>
+			var e = $(".centerer").css({ display: "inline-block" });
+			var v = $(window);
+			$(e).css({
+				position: "absolute",
+				top: ( $(v).height() - $(e).outerHeight() ) / 2,
+				left: ( $(v).width() - $(e).outerWidth() ) / 2
+			});
+		</script>
+	</body>
+</html>

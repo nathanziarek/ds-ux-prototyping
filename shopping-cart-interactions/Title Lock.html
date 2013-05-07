@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+		<link href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,700,300,600,800' rel='stylesheet' type='text/css'>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+		<script src="http://imakewebthings.com/jquery-waypoints/waypoints.js"></script>
+		<script src="http://imakewebthings.com/jquery-waypoints/shortcuts/sticky-elements/waypoints-sticky.js"></script>
+		<style>
+			.brand { width: 960px; margin: 10px auto; height: 120px}
+			.cart { width: 960px; margin: 10px auto; position: relative}
+			.cat-contain { position: relative; z-index: 1 }
+			.headingWrap { width:960px; height: 37px }
+			.heading { position: relative; padding: 5px; background: rgb(75,75,75); color: white; -webkit-transition: opacity .5s ease-out; z-index: 10 }
+			.heading.inactive.fixed, .heading.inactive.absolute { opacity: .8 }
+			.heading.fixed { position: fixed; top: 10px; left: 50%; margin-left: -480px; width: 950px; box-shadow: 0 0 5px rgba(0,0,0,.7) }
+			.cat.fixed { position: fixed; top: 56px; left: 50%; margin-left: -480px; width: 714px; }
+			.heading.absolute { position: absolute; bottom: 0; left: 0; width: 950px; }
+			.cat.absolute { position: absolute; bottom: 0; left: 0; width: 714px; }
+			.heading.fixed .price { opacity: 1 }
+			.heading h1 { font-size: 16px; line-height: 27px; padding: 0; margin: 0 }
+			.heading button { position: absolute; right: 5px; top: 5px }
+			.heading .price { opacity: 0; position: absolute; width: 200px; left: 50%; margin-left: -100px; top: 5px; text-align: center; line-height: 27px; overflow: hidden; -webkit-transition: all .5s ease-out }
+			.cart .line { line-height: 30px; height: 30px; background: rgb(240,240,240); border-bottom: 1px solid rgb(220,220,220) }
+			.cart .line:nth-child(odd) { height: 30px; background: white }
+			.cart .line.cat { background: #777; color: white; height: 25px; line-height: 25px; font-size: 12px; text-indent: 8px; font-weight: bold }
+			.cat-wrap { height: 26px; width: 714px }
+		</style>
+	</head>
+	<body>
+		<div class="brand"></div>
+		
+		<div class="cart container">
+			<div class="headingWrap">
+				<div class="heading">
+					<h1>DS Equipment &amp; Furnishings</h1>
+					<div class="price">Order Total: $56.78</div>
+					<button class="btn btn-small btn-primary span2">Submit Order</button>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="span9"><br/>
+					<div class="cat-contain"><div class="line cat">Invacare</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div></div><div class="cat-contain"><div class="line cat">Rubbermaid</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div></div><div class="cat-contain"><div class="line cat">Small Wares USA</div><div class="line"></div></div>
+				</div>
+				<div class="span3">
+					Summary
+				</div>
+			</div>
+		</div>
+		<div class="cart container">
+			<div class="headingWrap">
+				<div class="heading">
+					<h1>HD Supply</h1>
+					<div class="price">Order Total: $1,235.14</div>
+					<button class="btn btn-small btn-primary span2">Checkout</button>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="span9"><br/>
+					<div class="cat-contain"><div class="line cat">Plumbing</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div></div><div class="cat-contain"><div class="line cat">HVAC</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div></div>
+				</div>
+				<div class="span3">
+					Summary
+				</div>
+			</div>
+		</div>
+		<div style="height: 2000px"></div>
+		<script>
+			$("<DIV>").addClass("cart-end").appendTo(".cart");
+			$("<DIV>").addClass("cat-end").appendTo(".cat-contain");
+			$(".cat").wrap("<DIV class='cat-wrap'>");
+			
+			$(".cat").waypoint( function(d) {
+				console.log(".cat", d);
+				if(d == "down") {
+					$(this).addClass("fixed inactive");
+				} else {
+					$(this).removeClass("fixed inactive");
+				}
+			}, { offset: 57 } ).addClass("touched");
+			
+			$(".cat-end").waypoint( function(d) {
+				console.log(".cat-end", d);
+				var e = $(this).siblings(".cat-wrap").children(".cat");
+				if( d == "down" ) {
+					$(e).addClass("absolute").removeClass("fixed");
+				} else {
+					$(e).addClass("fixed").removeClass("absolute");
+				}
+			}, {offset: 57+26+1 } )
+			
+			$(".cart-end").waypoint(function(d){
+				var e = $(this).siblings(".headingWrap").children(".heading");
+				if( d == "down" ) {
+					$(e).addClass("absolute").removeClass("fixed");
+				} else {
+					$(e).addClass("fixed").removeClass("absolute");
+				}
+				//console.log(d);
+				//if(d=="down") { console.log("lock title to bottom"); } else { console.log("Return to fixed"); }
+			}, {offset: 47});
+			
+			$('.heading').waypoint(function(d) { 
+				if(d == "down") {
+					$(this).addClass("fixed inactive");
+				} else {
+					$(this).removeClass("fixed inactive");
+				}
+			}, {offset: 10}).hover(
+				function() { $(this).removeClass("inactive"); },
+				function() { $(this).addClass("inactive"); }
+			);
+		</script>
+	</body>
+</html>

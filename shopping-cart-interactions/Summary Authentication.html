@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+		<link href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,700,300,600,800' rel='stylesheet' type='text/css'>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+		<script src="http://imakewebthings.com/jquery-waypoints/waypoints.js"></script>
+		<script src="http://imakewebthings.com/jquery-waypoints/shortcuts/sticky-elements/waypoints-sticky.js"></script>
+		<style>
+			.brand { width: 960px; margin: 10px auto; height: 120px}
+			.summary { border: 1px solid rgb(235,235,235); padding: 10px }
+			.summary dl, .shiptax { margin: 0; font-size: 12px; padding: 3px 0; -webkit-transition: background 1s ease-out }
+			.summary dt, .summary dd, .shiptax {  text-align: right }
+			.summary .row-fluid [class*='span'] { min-height: auto }
+			.summary .total { font-size: 14px; font-weight: bold; color: #336699 }
+			.summary dl.changed { background: rgb(200, 220, 200); }
+			.save { color: rgb(50, 150, 50); }
+			#signin, #estimate { display: none }
+			.not-signed-in #signin, .not-signed-in #estimate { display: inline }
+			.not-signed-in .total, .not-signed-in .contract, .not-signed-in .ship, .not-signed-in .tax, #estimate2 { display: none; }
+			
+			.estimated .ship, .estimated .tax, .estimated .total { display: block }
+			.estimated #estimate { display:none }
+			.estimated #estimate2 { display: inline }
+			.ship span, .tax span { display: none }
+			.estimated .ship span, .estimated .tax span { display: inline }
+			
+			.nothing { margin-top: 20px; font-size: 12px; text-align: center; }
+			
+			/*.not-signed-in .save, .not-signed-in .total, .not-signed-in .ship, .not-signed-in .tax { display: none }
+			.estimated .save, .estimated .blah { display: none }
+			.icons li { margin: 10px }*/
+		</style>
+	</head>
+	<body>
+		<div class="brand"><a href="#" onclick="addPromo()">Add Promotion</a></div>
+		<div class="container">
+			<div class="row-fluid">
+				<div class="span3 not-signed-in" id="spot">
+					<div class="summary">
+						<dl class="row-fluid sub">
+							<dt class="span7">Sub Total</dt><dd class="span3">$896.12</dd>
+						</dl>
+						<dl class="row-fluid save contract">
+							<dt class="span7">Contract Savings</dt><dd class="span3">$214.94</dd>
+						</dl>
+						<dl class="row-fluid save promo">
+							<dt class="span7">Promotions</dt><dd class="span3 promotions">$20.50</dd>
+						</dl>
+						<dl class="row-fluid ship">
+							<dt class="span7">Shipping <span>*</span></dt><dd class="span3">$45.15</dd>
+						</dl>
+						<dl class="row-fluid tax">
+							<dt class="span7">Tax <span>*</span></dt><dd class="span3">$13.75</dd>
+						</dl>
+						<dl class="row-fluid total">
+							<dt class="span7">Order Total</dt><dd class="span3 order-total">$45.15</dd>
+						</dl>
+						<div class="row-fluid shiptax" id="estimate">
+							<div class="span7">Shipping &amp; Tax</div><div class="span3"><a href="#">Estimate</a></div>
+						</div>
+
+						<div class="row-fluid">
+							<div class="span12 nothing">
+								<span id='signin'><a href="#" onclick="$('#spot').removeClass('not-signed-in estimated')")><i class="icon-user"></i> Sign In</a> for contract pricing.</span>
+									<span id='estimate2'><br/><i>(* Estimate for zipcode 12345. <a title="Change Zipcode" href="#" >Change?</a>)</i></span>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script>
+			$("#estimate a, #estimate2 a")
+				.popover({
+					html:true, 
+					content:"<p>Please enter your zipcode to estimate your shipping and tax.</p><form id='estimateform' class='form-inline'><input id='estimatefeild' type='text' class='input-small'> <input id='estimatebutton' class='btn' type='submit' value='Estimate'>"
+				}).click( function(e){ 
+					$(this).popover('show'); 
+					$('#estimatefeild').focus().blur(function(){
+						$("#estimate a").popover("hide"); 
+						$("#estimatebutton").click(function(){}); 
+						$("#estimateform").submit(function(e) { $("#estimate a").popover("hide"); $("#spot").addClass("estimated"); return false; })
+					});
+					return false;
+				});
+			
+		
+			var s = [];
+			randomlyGetNumbers();
+			function randomlyGetNumbers() {
+				s = [];
+				s.push( Math.random() * 100 );
+				s.push( s[0] * (Math.random() / 10) );
+				s.push( 0 );
+				s.push( s[0] * .05 );
+				s.push( s[0] * .056 );
+				s.push( s[0] - s[1] - s[2] + s[3] + s[4] );
+				$(".span3").each( function(a,b) {
+					$(".summary dd", b).each( function(i,d) { $(d).text(makeDollar(s[i])); });
+				});
+				
+				
+				$(".summary .promo").hide();
+				
+			}
+			function makeDollar(n) {
+				var n =  Math.floor(n * 100) / 100;
+				n = n.toString().split(".");
+				if(n[1] == undefined) { n[1] = "00"; }
+				if(n[1] && n[1].length == 0) { n[1] = "00"; }
+				if(n[1] && n[1].length == 1) { n[1] += "0"; }
+				return "$" + n[0] + "." + n[1];
+			}
+			function addPromo() {
+				
+				var pFrom = { someValue: s[2] };
+				var pTo = {someValue: s[2] + Math.random() * 10 }
+				s[2] = pTo.someValue;
+				
+				if(s[2] != 0) { $(".summary .promo").slideDown(150) };
+				
+				var oFrom = { someValue: s[5] };
+				var oTo = {someValue: s[0] - s[1] - s[2] + s[3] + s[4] }
+				s[5] = oTo.someValue;
+				
+				jQuery(pFrom).animate(pTo, {
+					duration: 500,
+					step: function() { $(".promotions").text(makeDollar(this.someValue)); }
+				});
+				$(".promotions").parent().addClass("changed");
+				setTimeout('$(".promotions").parent().removeClass("changed");', 5000);
+				
+				jQuery(oFrom).animate(oTo, {
+					duration: 500,
+					step: function() { $(".order-total").text(makeDollar(this.someValue)); }
+				});
+				$(".order-total").parent().addClass("changed");
+				setTimeout('$(".order-total").parent().removeClass("changed");', 5000);
+
+				return false;
+			}
+		</script>
+	</body>
+</html>

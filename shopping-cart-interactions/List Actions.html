@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+		<link href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,700,300,600,800' rel='stylesheet' type='text/css'>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+		<script src="http://imakewebthings.com/jquery-waypoints/waypoints.js"></script>
+		<script src="http://imakewebthings.com/jquery-waypoints/shortcuts/sticky-elements/waypoints-sticky.js"></script>
+		<script src="http://packery.metafizzy.co/packery.pkgd.min.js"></script>
+		<style>
+			.brand { width: 960px; margin: 10px auto; height: 120px}
+			.dropdown-toggle { cursor: pointer; }
+			.ddhead { padding: 3px 20px; line-height: 20px; font-weight: bold; color: #777}
+			.v-grid .span4 { height: 100px }
+			.v-details .span12 {  }
+			.v-spreadsheet .span12 { height: 20px }
+			
+			.line { border: 1px solid #f1f1f1; padding: 5px }
+			
+			.v-spreadsheet div[class*="product"] { display: inline-block; height: 20px; margin-left: 10px }
+			.v-spreadsheet input { padding: 2px; height: 16px; width: 100%; font-size: 12px; margin: 0 }
+			.v-spreadsheet div.product-title { width: 468px; margin-left: 0 }
+			.v-spreadsheet .product-size { width: 200px }
+			.v-spreadsheet .product-per-cost { width: 200px; text-align: right; }
+			.v-spreadsheet .product-qty { width: 50px; text-align: center }
+			.v-spreadsheet .product-total-cost { width: 200px; text-align: right; }
+			.v-spreadsheet-header { font-size: 10px; font-weight: bold }
+			
+			.v-details div[class*="product"] { display: inline-block; margin-left: 10px; vertical-align: top; }
+			.v-details div.product-image { margin-left: 0; width: 61px; height: 61px }
+			.v-details div.product-data { width: 397px; font-size: 12px; line-height: 15px; color: #666 }
+			.v-details .detail-title { font-size: 14px; line-height: 16px; font-weight: bold; color: #333 }
+			.v-details .product-size { width: 200px; line-height: 50px }
+			.v-details .product-per-cost { width: 200px; text-align: right; line-height: 50px }
+			.v-details .product-qty { width: 50px; text-align: center; line-height: 50px }
+			.v-details .product-total-cost { width: 200px; text-align: right; line-height: 50px }
+			.v-details input { width: 100%; margin: 0 }
+			.v-details-header { font-size: 10px; font-weight: bold }
+			.v-details-header div.product-image { height: 1px; }
+			.v-details-header div[class*="product"] { line-height: 20px; height: 20px }
+			
+			.v-grid .detail-title { font-weight: bold; font-size: 16px; margin: 10px 0 0 0 }
+			.v-grid .detail-mfg { font-weight: bold; font-size: 14px; margin: 10px 0; color: #777 }
+			.v-grid .product-per-cost { font-weight: bold; font-size: 15px; margin: 10px 0; color: #336699; margin: 10px 0 }
+			.v-grid .product-qty, .v-grid .product-total-cost { display: inline-block }
+			.v-grid .product-qty { width: 50px; text-align: center }
+			.v-grid input { width: 50px; margin: 0 }
+			.v-grid .product-image { width: 358px; height: 200px }
+			.v-grid div.product-total-cost { width: 280px; text-align: right; }
+			.buy-block { background: #eee; padding: 10px }
+			
+			.box .row-fluid:nth-child(odd) { background: #f3f3f3 }
+		</style>
+	</head>
+	<body>
+		<div class="brand"></div>
+		<div class="container">
+			<div class="row-fluid">
+				<div class="span9"></div>
+				<div class="span3">
+					<div class="dropdown">
+						<span class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html">
+							<i class="icon-reorder"></i>
+							<b class="caret"></b>
+						</span>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li class="ddhead">Group By</li>
+							<li><a tabindex="-1" href="#" onclick="$('.span12').addClass('g-category')"><i class="icon-sitemap"></i> Category</a></li>
+							<li><a tabindex="-1" href="#" onclick="$('.span12').addClass('g-shipping')"><i class="icon-calendar"></i> Shipping Times</a></li>
+							<li class="divider"></li>
+							<li class="ddhead">View</li>
+							<li><a tabindex="-1" href="#" onclick="$('.v-grid, .v-details').hide();$('.v-spreadsheet').show()"><i class="icon-table"></i> Spreadsheet</a></li>
+							<li><a tabindex="-1" href="#" onclick="$('.v-grid, .v-spreadsheet').hide();$('.v-details').show()"><i class="icon-th-list"></i> Details</a></li>
+							<li><a tabindex="-1" href="#" onclick="$('.v-spreadsheet, .v-details').hide();$('.v-grid').show()"><i class="icon-th-large"></i> Grid</a></li>
+							<li class="divider"></li>
+							<li class="ddhead">Edit Mode</li>
+							<li><a tabindex="-1" href="#" onclick="$('.span12').addClass('g-category')"><i class="icon-reorder"></i> Shelf-to-Sheet</a></li>
+							<li><a tabindex="-1" href="#" onclick="$('.span12').addClass('g-shipping')"><i class="icon-edit"></i> Product Data</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="row-fluid v-spreadsheet v-spreadsheet-header">
+
+				<div class="span12"><div class="line"><div class="product-title">&nbsp;</div><div class="product-size">Unit of Measure</div><div class="product-per-cost">Per</div><div class="product-qty">&nbsp;</div><div class="product-total-cost">Line Total</div></div>
+			</div></div>
+			<span class="box">
+
+			<div class="row-fluid v-spreadsheet">
+				<div class="span12"><div class="line"><div class="product-title">DSSI Enterprise Water Bottle</div><div class="product-size">Each</div><div class="product-per-cost">$12.50</div><div class="product-qty"><input type="text" value="1"></div><div class="product-total-cost">$12.50</div></div>
+			</div></div>
+			<div class="row-fluid v-spreadsheet">
+				<div class="span12"><div class="line"><div class="product-title">OX Coffee Mug</div><div class="product-size">Case of 12</div><div class="product-per-cost">$60.00</div><div class="product-qty"><input type="text" value="3"></div><div class="product-total-cost">$180.00</div></div>
+			</div></div>
+			<div class="row-fluid v-spreadsheet">
+				<div class="span12"><div class="line"><div class="product-title">HP Laptop</div><div class="product-size">Each</div><div class="product-per-cost">$540.00</div><div class="product-qty"><input type="text" value="1"></div><div class="product-total-cost">$540.00</div></div>
+			</div></div></span>
+			
+			<span class="box">
+			<div class="row-fluid v-details v-details-header">
+				<div class="span12"><div class="line"><div class="product-image"></div><div class="product-data">&nbsp;</div><div class="product-size">Unit of Measure</div><div class="product-per-cost">Per</div><div class="product-qty">&nbsp;</div><div class="product-total-cost">Line Total</div></div>
+			</div></div>
+			<div class="row-fluid v-details"><div class="span12"><div class="line"><div class="product-image"><img style="opacity: 0" src="http://lorempixel.com/200/200/sports/2"></div><div class="product-data"><div class="detail-title">DSSI Enterprise Water Bottle</div><div class="detail-mfg">CamelBack Industries</div><div class="detail-ship">Ships in 5 days</div><div class="detail-extra">Part No NZ123AB553</div></div><div class="product-size">Each</div><div class="product-per-cost">$12.50<span>$14.50</span></div><div class="product-qty"><input type="text" value="1"></div><div class="product-total-cost">$12.50</div></div></div></div>
+			<div class="row-fluid v-details"><div class="span12"><div class="line"><div class="product-image"><img style="opacity: 0" src="http://lorempixel.com/200/200/animals/2"></div><div class="product-data"><div class="detail-title">OX Coffee Mug</div><div class="detail-mfg">Ugly Dolls, Ltd.</div><div class="detail-ship">Ships immediately</div><div class="detail-extra">Part No NZ123AB553</div></div><div class="product-size">Case of 12</div><div class="product-per-cost">$60.00</div><div class="product-qty"><input type="text" value="3"></div><div class="product-total-cost">$180.00</div></div></div></div>
+			<div class="row-fluid v-details"><div class="span12"><div class="line"><div class="product-image"><img style="opacity: 0" src="http://lorempixel.com/200/200/people/2"></div><div class="product-data"><div class="detail-title">HP Laptop</div><div class="detail-mfg">Hewlett Packard</div><div class="detail-ship">Ships in 1 day from New York</div><div class="detail-extra">Part No HP123AB553</div></div><div class="product-size">Each</div><div class="product-per-cost">$540.00</div><div class="product-qty"><input type="text" value="1"></div><div class="product-total-cost">$540.00</div></div></div></div>
+			</span>
+			
+			<div class="row-fluid v-grid">
+				<div class="span4"><div class="line"><div class="product-image"><img style="opacity: 0" src="http://lorempixel.com/360/200/sports/2"></div><div class="product-data"><div class="detail-title">DSSI Enterprise Water Bottle</div><div class="detail-mfg">CamelBack Industries</div><div class="product-size">Unit of Measure: Each</div><div class="detail-ship">Ships in 5 days</div><div class="detail-extra">Part No NZ123AB553</div></div><div class="product-per-cost">Your price: $12.50</div><div class="buy-block"><div class="product-qty"><input type="text" value="1"></div><div class="product-total-cost">$12.50</div></div></div>
+				</div>
+				<div class="span4"><div class="line"><div class="product-image"><img style="opacity: 0" src="http://lorempixel.com/360/200/animals/2"></div><div class="product-data"><div class="detail-title">OX Coffee Mug</div><div class="detail-mfg">Ugly Dolls, Ltd.</div><div class="product-size">Unit of Measure: Case of 12</div><div class="detail-ship">Ships immediately</div><div class="detail-extra">Part No NZ123AB553</div></div><div class="product-per-cost">Your price: $60.00 <span>Retail: $65.00</span></div><div class="buy-block"><div class="product-qty"><input type="text" value="3"></div><div class="product-total-cost">$180.00</div></div></div>
+				</div>
+				<div class="span4"><div class="line"><div class="product-image"><img style="opacity: 0" src="http://lorempixel.com/360/200/people/2"></div><div class="product-data"><div class="detail-title">HP Laptop</div><div class="detail-mfg">Hewlett Packard</div><div class="product-size">Unit of Measure: Each</div><div class="detail-ship">Ships in 1 day from New York</div><div class="detail-extra">Part No HP123AB553</div></div><div class="product-per-cost">Your price: $540.00</div><div class="buy-block"><div class="product-qty"><input type="text" value="1"></div><div class="product-total-cost">$540.00</div></div></div>
+				</div>
+			</div>
+
+
+		</div>
+		
+		<script>
+		$("img").load( function() {$(this).animate({opacity: 1}, 500) });
+		$('.v-grid, .v-spreadsheet').hide();$('.v-details').show()
+		//$('#blah').packery({ itemSelector: '.line-holder', gutter: 10 });
+		//$('#blah').packery();
+		</script>
+	</body>
+</html>
